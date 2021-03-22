@@ -16,6 +16,7 @@ of `simplify` on custom types. Optionally `symtype(x)` can be
 defined to return the expected type of the symbolic expression.
 """
 istree(x) = false
+istree(::Complex) = true
 
 """
     operation(x::T)
@@ -25,6 +26,7 @@ tree. Called only if `istree(::T)` is true. Part of the API required
 for `simplify` to work. Other required methods are `arguments` and `istree`
 """
 function operation end
+operation(c::Complex{T}) where T = Complex{T}
 
 """
     arguments(x::T)
@@ -34,6 +36,7 @@ Called only if `istree(x)` is `true`. Part of the API required
 for `simplify` to work. Other required methods are `operation` and `istree`
 """
 function arguments end
+arguments(c::Complex) = [real(c), imag(c)]
 
 """
     symtype(x)
